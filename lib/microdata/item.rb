@@ -17,8 +17,9 @@ module Microdata
       hash[:id] = id if id
       hash[:type] = type if type
       hash[:properties] = {}
-      properties.each do |name, values|
-        final_values = values.map do |value|
+      properties.each do |name, itemprops|
+        final_values = itemprops.map do |itemprop|
+          value = itemprop.properties[name]
           if value.is_a?(Item)
             value.to_hash
           else
@@ -57,9 +58,9 @@ module Microdata
     end
 
     # Add an 'itemprop' to the properties
-    def add_itemprop(itemprop)
-      properties = Itemprop.parse(itemprop, @page_url)
-      properties.each { |name, value| (@properties[name] ||= []) << value }
+    def add_itemprop(element)
+      itemprop = Itemprop.new(element, @page_url)
+      itemprop.properties.each { |name, value| (@properties[name] ||= []) << itemprop }
     end
 
     # Add any properties referred to by 'itemref'
