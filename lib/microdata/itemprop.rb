@@ -12,11 +12,15 @@ module Microdata
       'video' => 'src'
     }
 
+    LINK_ELEMENTS = ['a', 'area', 'audio', 'embed', 'iframe',
+                     'img', 'link', 'source', 'track', 'video']
+
     URL_ATTRIBUTES = ['data', 'href', 'src']
 
     # A Hash representing the properties.
     # Hash is of the form {'property name' => 'value'}
     attr_reader :properties
+    attr_reader :links
 
     # Create a new Itemprop object
     # [element]  The itemprop element to be parsed
@@ -25,6 +29,11 @@ module Microdata
     def initialize(element, page_url=nil)
       @element, @page_url = element, page_url
       @properties = extract_properties
+      @links = extract_links
+    end
+
+    def link?
+      LINK_ELEMENTS.include?(@element.name)
     end
 
     # Parse the element and return a hash representing the properties.
@@ -41,6 +50,13 @@ module Microdata
       prop_names = extract_property_names
       prop_names.each_with_object({}) do |name, memo|
         memo[name] = extract_property
+      end
+    end
+
+    def extract_links
+      rel_names = extract_rel_names
+      rel_names.each_with_object({}) do |name, memo|
+        memo[name] = extract_property_value
       end
     end
 
@@ -65,7 +81,12 @@ module Microdata
 
     def extract_property_names
       itemprop_attr = @element.attribute('itemprop')
-      itemprop_attr ? itemprop_attr.value.split() : []
+      itemprop_attr ? itemprop_attr.value.split : []
+    end
+
+    def extract_rel_names
+      link_rel = @element.attribute('rel')
+      link? && link_rel ? link_rel.value.split : []
     end
 
     def extract_property_value
