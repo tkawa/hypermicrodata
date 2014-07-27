@@ -1,10 +1,9 @@
 module Microdata
   module Serializer
     class Base
-      def initialize(html, location=nil)
-        html = StringIO.new(html) if html.is_a?(String)
+      def initialize(html, location=nil, main_item_id='main-item')
         @location = location
-        @document = Microdata::Document.new(html, location)
+        @document = Microdata::Document.new(html, location, main_item_id)
       end
 
       def to_json
