@@ -9,7 +9,10 @@ module Microdata
           else
             hal_resource = Halibut::Core::Resource.new(@location)
             items.each do |item|
-              hal_resource.add_embedded_resource(item.type.join(' '), item_to_resource(item))
+              embedded_resource = item_to_resource(item)
+              item.type.each do |type|
+                hal_resource.add_embedded_resource(type, embedded_resource)
+              end
             end
           end
           hal_resource.add_link('profile', @profile_path) if @profile_path
