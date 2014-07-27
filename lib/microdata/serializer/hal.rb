@@ -12,6 +12,7 @@ module Microdata
               hal_resource.add_embedded_resource(item.type.join(' '), item_to_resource(item))
             end
           end
+          hal_resource.add_link('profile', @profile_path) if @profile_path
           Halibut::Adapter::JSON.dump(hal_resource)
           # JSON.pretty_generate(hal_resource.to_hash)
         else
