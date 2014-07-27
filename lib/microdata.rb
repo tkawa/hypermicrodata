@@ -3,6 +3,8 @@ require "nokogiri"
 require "microdata/item"
 require "microdata/document"
 require "microdata/itemprop"
+require "microdata/serializer/base"
+require "microdata/serializer/hal"
 require 'open-uri'
 require 'json'
 require 'uri'
