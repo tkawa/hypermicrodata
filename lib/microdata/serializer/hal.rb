@@ -32,6 +32,7 @@ module Microdata
             end
           end
         end
+        resource.add_link('self', item.id) if item.id
         item.links.each do |name, itemprops|
           itemprops.each do |itemprop|
             resource.add_link(name, itemprop.links[name])
