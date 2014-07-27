@@ -3,12 +3,12 @@ module Microdata
 
     attr_reader :items, :doc
 
-    def initialize(content, page_url=nil, entry_point=nil)
+    def initialize(content, page_url=nil, filter_xpath=nil)
       @doc = Nokogiri::HTML(content)
-      if entry_point
-        entry_node = @doc.xpath(%{//*[@id="#{entry_point}"]})
+      if filter_xpath
+        entry_node = @doc.xpath(filter_xpath)
         if entry_node.empty?
-          puts "entry point #{entry_point} is not found. root node is used."
+          puts "XPath #{filter_xpath} is not found. root node is used."
         else
           @doc = entry_node
         end

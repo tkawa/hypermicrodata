@@ -1,9 +1,10 @@
 module Microdata
   module Serializer
     class Base
-      def initialize(html, location=nil, main_item_id='main-item')
+      def initialize(html, location=nil, data_attr_name='main-item')
         @location = location
-        @document = Microdata::Document.new(html, location, main_item_id)
+        filter_xpath = "//*[@data-#{data_attr_name}]"
+        @document = Microdata::Document.new(html, location, filter_xpath)
       end
 
       def to_json
