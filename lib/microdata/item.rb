@@ -60,8 +60,9 @@ module Microdata
     def parse_element(element)
       itemscope = element.attribute('itemscope')
       itemprop = element.attribute('itemprop')
+      link = element.attribute('rel') # TODO: improve
       internal_elements = extract_elements(element)
-      add_itemprop(element) if itemscope || itemprop
+      add_itemprop(element) if itemscope || itemprop || link
       parse_elements(internal_elements) if internal_elements && !itemscope
     end
 
