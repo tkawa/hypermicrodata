@@ -37,6 +37,9 @@ module Microdata
           end
         end
         resource.add_link('self', item.id) if item.id
+        Array(item.type).each do |type|
+          resource.add_link('type', type)
+        end
         item.links.each do |name, itemprops|
           itemprops.each do |itemprop|
             resource.add_link(name, itemprop.links[name])
