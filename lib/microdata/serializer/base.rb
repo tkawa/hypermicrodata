@@ -1,20 +1,22 @@
 module Microdata
   module Serializer
     class Base
-      def initialize(html, options = {})
-        default_data_attr_name = 'main-item'
-        @location = options[:location]
-        @profile_path = options[:profile_path]
-        filter_xpath = "//*[@data-#{options[:data_attr_name] || default_data_attr_name}]"
-        @document = Microdata::Document.new(html, @location, filter_xpath)
+      def initialize(document, location = nil, profile_path = nil)
+        @document = document
+        @location = location
+        @profile_path = profile_path
       end
 
-      def to_json
-        # 暫定的
+      def to_json(options = {})
+        MultiJson.dump(serialize, options)
+      end
+
+      def serialize
+        # return hash or array suitable for application/json
         if @document.items.present?
-          JSON.pretty_generate(@document.items.map(&:to_hash))
+          @document.items.map(&:to_hash)
         else
-          '[]'
+          []
         end
       end
     end

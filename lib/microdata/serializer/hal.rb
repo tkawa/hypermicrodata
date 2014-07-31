@@ -1,28 +1,24 @@
 module Microdata
   module Serializer
     class Hal < Base
-      def to_json
+      def serialize
         items = @document.items
-        if items.present?
-          if items.length == 1
-            hal_resource = item_to_resource(items.first, @location)
-          else
-            hal_resource = Halibut::Core::Resource.new(@location)
-            items.each do |item|
-              embedded_resource = item_to_resource(item)
-              item.type.each do |type|
-                hal_resource.add_embedded_resource(type, embedded_resource)
-              end
+        if items.length == 1
+          hal_resource = item_to_resource(items.first, @location)
+        else
+          hal_resource = Halibut::Core::Resource.new(@location)
+          items.each do |item|
+            embedded_resource = item_to_resource(item)
+            item.type.each do |type|
+              hal_resource.add_embedded_resource(type, embedded_resource)
             end
           end
-          hal_resource.add_link('profile', @profile_path) if @profile_path
-          Halibut::Adapter::JSON.dump(hal_resource)
-          # JSON.pretty_generate(hal_resource.to_hash)
-        else
-          '{}'
         end
+        hal_resource.add_link('profile', @profile_path) if @profile_path
+        hal_resource.to_hash
       end
 
+      private
       def item_to_resource(item, self_url = nil)
         resource = Halibut::Core::Resource.new(self_url)
         item.properties.each do |name, itemprops|

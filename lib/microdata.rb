@@ -5,6 +5,7 @@ require "microdata/document"
 require "microdata/itemprop"
 require "microdata/serializer/base"
 require "microdata/serializer/hal"
+require "microdata/extract"
 require 'open-uri'
 require 'json'
 require 'uri'
