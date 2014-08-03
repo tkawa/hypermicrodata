@@ -1,10 +1,12 @@
 require "microdata/version"
+require "uberous/uber"
 require "nokogiri"
 require "microdata/item"
 require "microdata/document"
 require "microdata/itemprop"
 require "microdata/serializer/base"
 require "microdata/serializer/hal"
+require "microdata/serializer/uber"
 require "microdata/extract"
 require 'open-uri'
 require 'json'

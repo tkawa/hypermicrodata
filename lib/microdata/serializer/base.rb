@@ -13,7 +13,7 @@ module Microdata
 
       def serialize
         # return hash or array suitable for application/json
-        if @document.items.present?
+        if @document.items
           @document.items.map(&:to_hash)
         else
           []
