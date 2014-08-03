@@ -63,4 +63,42 @@ module Uberous
       hash
     end
   end
+
+  class Loader
+    attr_reader :uber
+    def initialize(hash)
+      uber_hash = hash['uber']
+      @uber_data_hashes = uber_hash.fetch('data', [])
+      @uber_error_data_hashes = uber_hash.fetch('error', [])
+      @uber = Uber.new([], [], uber_hash['version'])
+
+      load_data
+      load_error_data
+    end
+
+    def load_data
+      @uber_data_hashes.each do |uber_data_hash|
+        @uber.add_data(hash_to_data(uber_data_hash))
+      end
+    end
+
+    def load_error_data
+      @uber_error_data_hashes.each do |uber_error_data_hash|
+        @uber.add_data(hash_to_data(uber_error_data_hash))
+      end
+    end
+
+    def hash_to_data(hash)
+      data_hash = {}
+      hash.each do |k, v|
+        data_hash[(k.to_sym rescue k)] = v # symbolize_keys
+      end
+      child_data_hashes = data_hash.delete(:data) || []
+      data = Data.new(data_hash)
+      child_data_hashes.each do |child_data_hash|
+        data.add_data(hash_to_data(child_data_hash))
+      end
+      data
+    end
+  end
 end
