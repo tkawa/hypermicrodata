@@ -34,25 +34,28 @@ module Microdata
         else
           parent_data.name = self_name if self_name # consider a semantic descriptor
         end
-        item.properties.each do |name, itemprops|
-          itemprops.each do |itemprop|
-            value = itemprop.properties[name]
-            if value.is_a?(Microdata::Item)
-              child_data = item_to_nested_data(value, name)
+        item.all_properties_and_links.each do |property|
+          rel = property.rels.join(' ') unless property.rels.empty?
+          if property.item?
+            # TODO: name複数の場合のduplicateをなくす
+            property.names.each do |name|
+              child_data = item_to_nested_data(property.item, name)
               parent_data.add_data(child_data)
-            else
-              parent_data.add_data(Uberous::Data.new(name: name, value: value))
+            end
+            # itemかつlinkというのはたぶんない
+          elsif property.link?
+            property.names.each do |name|
+              child_data = Uberous::Data.new(name: name, value: property.value, rel: rel)
+              parent_data.add_data(child_data)
+            end
+          else # only value
+            property.names.each do |name|
+              child_data = Uberous::Data.new(name: name, value: property.value)
+              parent_data.add_data(child_data)
             end
           end
         end
-        # Array(item.type).each do |type|
-        #   parent_data.add_link('type', type)
-        # end
-        item.links.each do |name, itemprops|
-          itemprops.each do |itemprop|
-            parent_data.add_link(name, itemprop.links[name])
-          end
-        end
+
         parent_data
       end
 

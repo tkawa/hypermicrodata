@@ -21,14 +21,13 @@ module Microdata
       private
       def item_to_resource(item, self_url = nil)
         resource = Halibut::Core::Resource.new(self_url)
-        item.properties.each do |name, itemprops|
-          itemprops.each do |itemprop|
-            value = itemprop.properties[name]
-            if value.is_a?(Microdata::Item)
-              subresource = item_to_resource(value)
+        item.properties.each do |name, same_name_properties|
+          same_name_properties.each do |property|
+            if property.item
+              subresource = item_to_resource(property.item)
               resource.add_embedded_resource(name, subresource)
             else
-              resource.set_property(name, value)
+              resource.set_property(name, property.value)
             end
           end
         end
@@ -36,9 +35,9 @@ module Microdata
         Array(item.type).each do |type|
           resource.add_link('type', type)
         end
-        item.links.each do |name, itemprops|
-          itemprops.each do |itemprop|
-            resource.add_link(name, itemprop.links[name])
+        item.links.each do |rel, same_rel_links|
+          same_rel_links.each do |link|
+            resource.add_link(rel, link.value)
           end
         end
         resource

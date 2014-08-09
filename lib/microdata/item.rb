@@ -18,25 +18,32 @@ module Microdata
       hash[:id] = id if id
       hash[:type] = type if type
       hash[:properties] = {}
-      properties.each do |name, itemprops|
-        final_values = itemprops.map do |itemprop|
-          value = itemprop.properties[name]
-          if value.is_a?(Item)
-            value.to_hash
+      properties.each do |name, same_name_properties|
+        final_values = same_name_properties.map do |property|
+          if property.item
+            property.item.to_hash
           else
-            value
+            property.value
           end
         end
         hash[:properties][name] = final_values
       end
       hash[:links] = {}
-      links.each do |name, itemprops|
-        final_values = itemprops.map do |itemprop|
-          itemprop.links[name]
+      links.each do |rel, same_rel_links|
+        final_values = same_rel_links.map do |link|
+          if link.item
+            link.item.to_hash
+          else
+            link.value
+          end
         end
-        hash[:links][name] = final_values
+        hash[:links][rel] = final_values
       end
       hash
+    end
+
+    def all_properties_and_links
+      properties.values.flatten | links.values.flatten
     end
 
     private
@@ -68,9 +75,9 @@ module Microdata
 
     # Add an 'itemprop' to the properties
     def add_itemprop(element)
-      itemprop = Itemprop.new(element, @page_url)
-      itemprop.properties.each { |name, value| (@properties[name] ||= []) << itemprop }
-      itemprop.links.each { |name, value| (@links[name] ||= []) << itemprop }
+      property = ItempropParser.parse(element, @page_url)
+      property.names.each { |name| (@properties[name] ||= []) << property }
+      property.rels.each { |rel| (@links[rel] ||= []) << property }
     end
 
     # Add any properties referred to by 'itemref'

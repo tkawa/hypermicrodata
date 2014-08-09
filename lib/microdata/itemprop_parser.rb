@@ -1,6 +1,6 @@
 module Microdata
 # Class that parses itemprop elements
-  class Itemprop
+  class ItempropParser
 
     NON_TEXTCONTENT_ELEMENTS = {
       'a' => 'href',        'area' => 'href',
@@ -19,8 +19,9 @@ module Microdata
 
     # A Hash representing the properties.
     # Hash is of the form {'property name' => 'value'}
-    attr_reader :properties
-    attr_reader :links
+    attr_reader :property
+    # attr_reader :properties
+    # attr_reader :links
 
     # Create a new Itemprop object
     # [element]  The itemprop element to be parsed
@@ -28,12 +29,9 @@ module Microdata
     #            absolute urls
     def initialize(element, page_url=nil)
       @element, @page_url = element, page_url
-      @properties = extract_properties
-      @links = extract_links
-    end
-
-    def link?
-      LINK_ELEMENTS.include?(@element.name)
+      @property = Property.new(extract_property, extract_property_names, extract_rel_names)
+      # @properties = extract_properties
+      # @links = extract_links
     end
 
     # Parse the element and return a hash representing the properties.
@@ -42,7 +40,11 @@ module Microdata
     # [page_url] The url of the page, including filename, used to form
     #            absolute urls
     def self.parse(element, page_url=nil)
-      self.new(element, page_url).properties
+      self.new(element, page_url).property
+    end
+
+    def link?
+      LINK_ELEMENTS.include?(@element.name)
     end
 
   private
