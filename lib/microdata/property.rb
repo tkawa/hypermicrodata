@@ -17,7 +17,11 @@ module Microdata
     end
 
     def link?
-      !@rels.empty?
+      false
+    end
+
+    def submit_button?
+      false
     end
   end
 end

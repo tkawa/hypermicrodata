@@ -67,17 +67,21 @@ module Microdata
     def parse_element(element)
       itemscope = element.attribute('itemscope')
       itemprop = element.attribute('itemprop')
-      link = element.attribute('rel') # TODO: improve
       internal_elements = extract_elements(element)
-      add_itemprop(element) if itemscope || itemprop || link
+      add_itemprop(element) if itemscope || itemprop || ItempropParser::LINK_ELEMENTS.include?(element.name)
+      add_form(element) if element.name == 'form'
       parse_elements(internal_elements) if internal_elements && !itemscope
     end
 
     # Add an 'itemprop' to the properties
     def add_itemprop(element)
       property = ItempropParser.parse(element, @page_url)
-      property.names.each { |name| (@properties[name] ||= []) << property }
-      property.rels.each { |rel| (@links[rel] ||= []) << property }
+      if property.link? && property.names.empty? && property.rels.empty?
+        (@links['link'] ||= []) << property
+      else
+        property.names.each { |name| (@properties[name] ||= []) << property }
+        property.rels.each { |rel| (@links[rel] ||= []) << property }
+      end
     end
 
     # Add any properties referred to by 'itemref'
@@ -85,6 +89,18 @@ module Microdata
       itemref = element.attribute('itemref')
       if itemref
         itemref.value.split(' ').each {|id| parse_elements(find_with_id(id))}
+      end
+    end
+
+    def add_form(element)
+      submit_buttons = FormParser.parse(element, @page_url)
+      submit_buttons.each do |submit_button|
+        submit_button.names.each { |name| (@properties[name] ||= []) << submit_button }
+        if submit_button.rels.empty?
+          (@links['submit'] ||= []) << submit_button
+        else
+          submit_button.rels.each { |rel| (@links[rel] ||= []) << submit_button }
+        end
       end
     end
 

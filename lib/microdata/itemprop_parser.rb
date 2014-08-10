@@ -20,8 +20,6 @@ module Microdata
     # A Hash representing the properties.
     # Hash is of the form {'property name' => 'value'}
     attr_reader :property
-    # attr_reader :properties
-    # attr_reader :links
 
     # Create a new Itemprop object
     # [element]  The itemprop element to be parsed
@@ -29,9 +27,11 @@ module Microdata
     #            absolute urls
     def initialize(element, page_url=nil)
       @element, @page_url = element, page_url
-      @property = Property.new(extract_property, extract_property_names, extract_rel_names)
-      # @properties = extract_properties
-      # @links = extract_links
+      if link?
+        @property = Link.new(extract_property, extract_property_names, extract_rel_names)
+      else
+        @property = Property.new(extract_property, extract_property_names, extract_rel_names)
+      end
     end
 
     # Parse the element and return a hash representing the properties.
