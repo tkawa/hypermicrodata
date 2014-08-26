@@ -30,13 +30,8 @@ module Microdata
     end
 
     def rels
-      if rel = @button.node['rel']
-        rel.split(' ')
-      elsif rel = @button.node['data-rel']
-        rel.split(' ')
-      else
-        @button.dom_class
-      end
+      rel = (@button.node['rel'] || @button.node['data-rel'] || @button.dom_class || '')
+      rel.split(' ')
     end
 
     def item
