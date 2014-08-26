@@ -1,4 +1,4 @@
-module Microdata
+module Hypermicrodata
   class Property
     attr_reader :value, :names, :rels
 

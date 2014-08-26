@@ -1,4 +1,4 @@
-module Microdata
+module Hypermicrodata
   module Serializer
     class Jsonld < Base
 
@@ -20,7 +20,7 @@ module Microdata
         end
         properties.each do |name, values|
           final_values = values.map do |value|
-            if value.is_a?(Microdata::Item)
+            if value.is_a?(Hypermicrodata::Item)
               value.to_hash
             else
               value
@@ -39,6 +39,6 @@ module Microdata
         end
       end
     end
-    # Microdata::Item.send :prepend, JsonldSerializer
+    # Hypermicrodata::Item.send :prepend, JsonldSerializer
   end
 end

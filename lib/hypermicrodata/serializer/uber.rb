@@ -1,4 +1,4 @@
-module Microdata
+module Hypermicrodata
   module Serializer
     class Uber < Base
       ACTION_MAPPINGS = {

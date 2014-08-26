@@ -1,4 +1,4 @@
-module Microdata
+module Hypermicrodata
   class SubmitButton < Property
     attr_reader :form, :method
 

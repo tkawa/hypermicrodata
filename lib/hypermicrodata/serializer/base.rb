@@ -1,4 +1,4 @@
-module Microdata
+module Hypermicrodata
   module Serializer
     class Base
       def initialize(document, location = nil, profile_path = nil)

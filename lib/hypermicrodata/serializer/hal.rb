@@ -1,4 +1,4 @@
-module Microdata
+module Hypermicrodata
   module Serializer
     class Hal < Base
       def serialize

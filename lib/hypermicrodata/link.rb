@@ -1,4 +1,4 @@
-module Microdata
+module Hypermicrodata
   class Link < Property
     def link?
       true

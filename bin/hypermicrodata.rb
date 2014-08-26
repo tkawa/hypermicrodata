@@ -1,13 +1,13 @@
 #! /usr/bin/env ruby
 
-# microdata.rb 
+# hypermicrodata.rb
 # Extract HTML5 Microdata and output JSON
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-require 'microdata'
+require 'hypermicrodata'
 
 location = ARGV[0]
 content = open(location)
-document = Microdata::Document.new(content, location)
+document = Hypermicrodata::Document.new(content, location)
 items = document.extract_items
 
 if items.empty? || items.nil?

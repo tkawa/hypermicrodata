@@ -3,7 +3,7 @@ require 'test_helper'
 class TestItemref < Test::Unit::TestCase
 
   def setup
-    @items = Microdata.get_items('test/data/example_itemref.html')
+    @items = Hypermicrodata.get_items('test/data/example_itemref.html')
   end
 
   def test_top_item_name

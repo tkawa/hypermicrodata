@@ -1,22 +1,22 @@
-require "microdata/version"
+require "hypermicrodata/version"
 require "uberous/uber"
 require "nokogiri"
 require "mechanize"
-require "microdata/item"
-require "microdata/document"
-require "microdata/property"
-require "microdata/link"
-require "microdata/itemprop_parser"
-require "microdata/submit_button"
-require "microdata/serializer/base"
-require "microdata/serializer/hal"
-require "microdata/serializer/uber"
-require "microdata/extract"
+require "hypermicrodata/item"
+require "hypermicrodata/document"
+require "hypermicrodata/property"
+require "hypermicrodata/link"
+require "hypermicrodata/itemprop_parser"
+require "hypermicrodata/submit_button"
+require "hypermicrodata/serializer/base"
+require "hypermicrodata/serializer/hal"
+require "hypermicrodata/serializer/uber"
+require "hypermicrodata/extract"
 require 'open-uri'
 require 'json'
 require 'uri'
 
-module Microdata
+module Hypermicrodata
 
   # PROPERTY_VALUES = {
   #   meta:     'content',
@@ -36,7 +36,7 @@ module Microdata
   def self.get_items(location)
     content = open(location)
     page_url = location
-    Microdata::Document.new(content, page_url).extract_items
+    Hypermicrodata::Document.new(content, page_url).extract_items
   end
 
   def self.to_json(location)

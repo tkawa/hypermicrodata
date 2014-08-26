@@ -1,4 +1,4 @@
-module Microdata
+module Hypermicrodata
   class Item
     attr_reader :type, :properties, :links, :id
 

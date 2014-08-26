@@ -1,3 +1,3 @@
 require 'test/unit'
-require 'microdata'
+require 'hypermicrodata'
 require 'pry'

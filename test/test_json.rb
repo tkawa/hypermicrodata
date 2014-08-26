@@ -3,7 +3,7 @@ require 'test_helper'
 class TestJson < Test::Unit::TestCase
 
   def setup
-    json = Microdata.to_json('test/data/example_itemref.html')
+    json = Hypermicrodata.to_json('test/data/example_itemref.html')
     @top_item = JSON.parse(json)['items'].first
   end
 

@@ -1,8 +1,8 @@
-# Microdata
+# Hypermicrodata
 
-Ruby library for extracting HTML5 Microdata
+Ruby library for extracting HTML5 Microdata with Hypermedia
 
-[![Build Status](https://travis-ci.org/jronallo/microdata.png)](https://travis-ci.org/jronallo/microdata)
+[![Build Status](https://travis-ci.org/tkawa/hypermicrodata.png)](https://travis-ci.org/tkawa/hypermicrodata)
 
 ## Story 
 
@@ -14,7 +14,7 @@ This library has not been released to RubyGems.org yet, but when it is the inten
 
 Add this line to your application's Gemfile:
 
-    gem 'microdata'
+    gem 'hypermicrodata'
 
 And then execute:
 
@@ -22,14 +22,14 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install microdata
+    $ gem install hypermicrodata
 
 ## Usage
 
-The commandline tool microdata.rb can be run like the following:
+The commandline tool hypermicrodata.rb can be run like the following:
 
 ```
-microdata.rb http://d.lib.ncsu.edu/collections/catalog/mc00383-001-ff0006-001-001_0038
+hypermicrodata.rb http://d.lib.ncsu.edu/collections/catalog/mc00383-001-ff0006-001-001_0038
 ```
 
 Output is in pretty JSON format.

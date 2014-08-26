@@ -1,4 +1,4 @@
-module Microdata
+module Hypermicrodata
 # Class that parses itemprop elements
   class ItempropParser
 

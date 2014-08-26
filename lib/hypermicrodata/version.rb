@@ -1,3 +1,3 @@
-module Microdata
+module Hypermicrodata
   VERSION = "0.0.3"
 end

@@ -1,4 +1,4 @@
-module Microdata
+module Hypermicrodata
   class Document
 
     attr_reader :items, :doc
