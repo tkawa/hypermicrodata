@@ -12,6 +12,7 @@ require "hypermicrodata/serializer/base"
 require "hypermicrodata/serializer/hal"
 require "hypermicrodata/serializer/uber"
 require "hypermicrodata/extract"
+require "hypermicrodata/rails/html_based_json_renderer"
 require 'open-uri'
 require 'json'
 require 'uri'
