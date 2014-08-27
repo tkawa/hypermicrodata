@@ -19,21 +19,6 @@ require 'uri'
 
 module Hypermicrodata
 
-  # PROPERTY_VALUES = {
-  #   meta:     'content',
-  #   audio:    'src',
-  #   embed:    'src',
-  #   iframe:   'src',
-  #   img:      'src',
-  #   source:   'src',
-  #   video:    'src',
-  #   a:        'href',
-  #   area:     'href',
-  #   link:     'href',
-  #   object:   'data',
-  #   time:     'datetime'
-  # }
-
   def self.get_items(location)
     content = open(location)
     page_url = location
