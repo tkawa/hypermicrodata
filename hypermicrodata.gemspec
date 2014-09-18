@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jronallo@gmail.com", "tkawa@4bit.net"]
   spec.description   = %q{HTML5 Microdata extractor with Hypermedia}
   spec.summary       = %q{Ruby library for extracting HTML5 Microdata with Hypermedia}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/tkawa/hypermicrodata"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
