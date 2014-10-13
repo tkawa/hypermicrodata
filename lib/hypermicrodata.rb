@@ -20,9 +20,11 @@ require 'uri'
 module Hypermicrodata
 
   def self.get_items(location)
-    content = open(location)
+    f = open(location)
     page_url = location
-    Hypermicrodata::Document.new(content, page_url).extract_items
+    Hypermicrodata::Document.new(f, page_url).extract_items
+  ensure
+    f.close
   end
 
   def self.to_json(location)
