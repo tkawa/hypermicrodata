@@ -27,8 +27,8 @@ module Hypermicrodata
     f.close
   end
 
-  def self.to_json(location)
-    items = get_items(location)
+  def self.to_json(location, encoding = nil)
+    items = get_items(location, encoding)
     hash = {}
     hash[:items] = items.map do |item|
       item.to_hash
