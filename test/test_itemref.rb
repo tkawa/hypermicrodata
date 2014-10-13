@@ -7,13 +7,13 @@ class TestItemref < Test::Unit::TestCase
   end
 
   def test_top_item_name
-    assert_equal ['Amanda'], @items.first.properties['name']
+    assert_equal ['Amanda'], @items.first.properties['name'].map(&:value)
   end
 
   def test_band_name_and_size
-    band = @items.first.properties['band'].first
-    assert_equal ['Jazz Band'], band.properties['name']
-    assert_equal ['12'], band.properties['size']
+    band = @items.first.properties['band'].first.item
+    assert_equal ['Jazz Band'], band.properties['name'].map(&:value)
+    assert_equal ['12'], band.properties['size'].map(&:value)
   end
 
 end
