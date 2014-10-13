@@ -42,6 +42,14 @@ Supported formats are
 
 When you use this in Rails, you don't need to extract data manually.
 
+/config/mime_types.rb
+
+```
+Mime::Type.register 'application/vnd.amundsen-uber+json', :uberjson
+# or when you want HAL
+Mime::Type.register 'application/hal+json', :haljson
+```
+
 /app/controllers/people_controller.rb
 
 ```
