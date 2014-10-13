@@ -5,7 +5,7 @@ module Hypermicrodata
       @location = options[:location]
       @profile_path = options[:profile_path]
       filter_xpath_attr = "@data-#{options[:data_attr_name] || default_data_attr_name}"
-      @document = Hypermicrodata::Document.new(html, @location, filter_xpath_attr)
+      @document = Hypermicrodata::Document.new(html, page_url: @location, filter_xpath_attr: filter_xpath_attr)
     end
 
     def to_json(format = :plain, options = {})

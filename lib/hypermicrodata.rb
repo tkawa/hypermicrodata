@@ -19,10 +19,10 @@ require 'uri'
 
 module Hypermicrodata
 
-  def self.get_items(location)
+  def self.get_items(location, encoding = nil)
     f = open(location)
     page_url = location
-    Hypermicrodata::Document.new(f, page_url).extract_items
+    Hypermicrodata::Document.new(f, page_url: location, force_encoding: encoding).extract_items
   ensure
     f.close
   end

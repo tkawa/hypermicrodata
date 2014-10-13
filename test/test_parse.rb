@@ -3,7 +3,7 @@ require 'test_helper'
 class TestParse < Test::Unit::TestCase
 
   def setup
-    @items = Hypermicrodata.get_items('test/data/example.html')
+    @items = Hypermicrodata.get_items('test/data/example.html', 'utf-8')
   end
 
   def test_top_item_type

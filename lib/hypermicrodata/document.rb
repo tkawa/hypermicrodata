@@ -3,10 +3,11 @@ module Hypermicrodata
 
     attr_reader :items, :doc
 
-    def initialize(content, page_url=nil, filter_xpath_attr=nil)
-      @doc = Nokogiri::HTML(content)
-      @page_url = page_url
-      @filter_xpath_attr = filter_xpath_attr
+    def initialize(content, options = {})
+      encoding = options[:force_encoding] || nil
+      @doc = Nokogiri::HTML(content, nil, encoding)
+      @page_url = options[:page_url]
+      @filter_xpath_attr = options[:filter_xpath_attr]
       @items = extract_items
     end
 
