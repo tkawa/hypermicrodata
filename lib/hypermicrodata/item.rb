@@ -77,7 +77,10 @@ module Hypermicrodata
     def add_itemprop(element)
       property = ItempropParser.parse(element, @page_url)
       if property.link? && property.names.empty? && property.rels.empty?
-        (@links['link'] ||= []) << property
+        href = property.value.to_s.strip
+        unless href.empty? || href == '#' # href which doesn't work as link is ignored
+          (@links[element.name] ||= []) << property
+        end
       else
         property.names.each { |name| (@properties[name] ||= []) << property }
         property.rels.each { |rel| (@links[rel] ||= []) << property }
