@@ -15,9 +15,17 @@ module Hypermicrodata
       itemscopes = []
       if @filter_xpath_attr
         itemscopes = @doc.xpath("//*[#{@filter_xpath_attr} and @itemscope]")
-        puts "XPath //*[#{@filter_xpath_attr}] is not found. root node is used." if itemscopes.empty?
       end
-      itemscopes = @doc.xpath('self::*[@itemscope] | .//*[@itemscope and not(@itemprop)]') if itemscopes.empty?
+      if itemscopes.empty?
+        print "XPath //*[#{@filter_xpath_attr}] is not found. "
+        itemscopes = @doc.xpath("//main[@itemscope]")
+      end
+      if itemscopes.empty?
+        print "root node is used.\n"
+        itemscopes = @doc.xpath('self::*[@itemscope] | .//*[@itemscope and not(@itemprop)]')
+      else
+        print "main node is used.\n"
+      end
 
       itemscopes.collect do |itemscope|
         Item.new(itemscope, @page_url)
