@@ -104,7 +104,7 @@ module Hypermicrodata
 
     def extract_property
       if @element.attribute('itemscope')
-        Item.new(@element, @page_url)
+        Item.parse(@element, @page_url)
       else
         extract_property_value
       end

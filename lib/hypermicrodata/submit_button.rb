@@ -26,11 +26,11 @@ module Hypermicrodata
     end
 
     def names
-      (@button.node['itemprop'] || '').split(' ')
+      (node['itemprop'] || '').split(' ')
     end
 
     def rels
-      rel = (@button.node['rel'] || @button.node['data-rel'] || @button.dom_class || '')
+      rel = (node['rel'] || node['data-rel'] || @button.dom_class || '')
       rel.split(' ')
     end
 
@@ -44,6 +44,10 @@ module Hypermicrodata
 
     def submit_button?
       true
+    end
+
+    def node
+      @button.node
     end
 
     private
@@ -75,31 +79,5 @@ module Hypermicrodata
         end
       end.compact.join('&')
     end
-  end
-
-  class FormParser
-    attr_reader :submit_buttons
-
-    def initialize(element, page_url = nil)
-      @element, @page_url = element, page_url
-      form = Mechanize::Form.new(element)
-      @submit_buttons = form.submits.map do |button|
-        SubmitButton.new(button, form)
-      end
-    end
-
-    def self.parse(element, page_url = nil)
-      self.new(element, page_url).submit_buttons
-    end
-  end
-end
-
-# Patch for bug
-Mechanize::Form.class_eval do
-  # Returns all buttons of type Submit
-  def submits
-    @submits ||= buttons.select {|f|
-      f.class == Mechanize::Form::Submit || (f.class == Mechanize::Form::Button && (f.type.nil? || f.type == 'submit'))
-    }
   end
 end

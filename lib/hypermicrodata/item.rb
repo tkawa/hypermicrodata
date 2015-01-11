@@ -2,6 +2,14 @@ module Hypermicrodata
   class Item
     attr_reader :type, :properties, :links, :id
 
+    def self.parse(top_node, page_url)
+      if top_node.name == 'form'
+        FormItem.new(top_node, page_url)
+      else
+        Item.new(top_node, page_url)
+      end
+    end
+
     def initialize(top_node, page_url)
       @top_node = top_node
       @type = extract_itemtype
@@ -68,8 +76,7 @@ module Hypermicrodata
       itemscope = element.attribute('itemscope')
       itemprop = element.attribute('itemprop')
       internal_elements = extract_elements(element)
-      add_itemprop(element) if itemscope || itemprop || ItempropParser::LINK_ELEMENTS.include?(element.name)
-      add_form(element) if element.name == 'form'
+      add_itemprop(element) if itemprop || ItempropParser::LINK_ELEMENTS.include?(element.name)
       parse_elements(internal_elements) if internal_elements && !itemscope
     end
 
@@ -95,22 +102,64 @@ module Hypermicrodata
       end
     end
 
-    def add_form(element)
-      submit_buttons = FormParser.parse(element, @page_url)
-      submit_buttons.each do |submit_button|
-        submit_button.names.each { |name| (@properties[name] ||= []) << submit_button }
-        if submit_button.rels.empty?
-          (@links['submit'] ||= []) << submit_button
-        else
-          submit_button.rels.each { |rel| (@links[rel] ||= []) << submit_button }
-        end
-      end
-    end
-
     # Find an element with a matching id
     def find_with_id(id)
       @top_node.search("//*[@id='#{id}']")
     end
+  end
 
+  class FormItem < Item
+    attr_reader :submit_buttons
+
+    def initialize(top_node, page_url)
+      form = Mechanize::Form.new(top_node)
+      @submit_buttons = form.submits.map do |button|
+        SubmitButton.new(button, form)
+      end
+      super
+    end
+
+    private
+
+    def extract_itemtype
+      super || ['http://schema.org/Action']
+    end
+
+    # TODO: Make it DRY
+    def parse_element(element)
+      itemscope = element.attribute('itemscope')
+      itemprop = element.attribute('itemprop')
+      internal_elements = extract_elements(element)
+      add_itemprop(element) if itemprop || ItempropParser::LINK_ELEMENTS.include?(element.name) || submit_button_include?(element)
+      parse_elements(internal_elements) if internal_elements && !itemscope
+    end
+
+    def add_itemprop(element)
+      return super unless submit_button_include?(element)
+      property = @submit_buttons.find {|b| b.node == element }
+      if property.names.empty? && property.rels.empty?
+        href = property.value.to_s.strip
+        unless href.empty? || href == '#' # href which doesn't work as link is ignored
+          (@links[element.name] ||= []) << property
+        end
+      else
+        property.names.each { |name| (@properties[name] ||= []) << property }
+        property.rels.each { |rel| (@links[rel] ||= []) << property }
+      end
+    end
+
+    def submit_button_include?(element)
+      @submit_buttons.any? {|b| b.node == element }
+    end
+  end
+end
+
+# Patch for bug
+Mechanize::Form.class_eval do
+  # Returns all buttons of type Submit
+  def submits
+    @submits ||= buttons.select {|f|
+      f.class == Mechanize::Form::Submit || (f.class == Mechanize::Form::Button && (f.type.nil? || f.type == 'submit'))
+    }
   end
 end
