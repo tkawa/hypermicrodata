@@ -15,7 +15,7 @@ require "hypermicrodata/extract"
 require "hypermicrodata/rails/html_based_json_renderer"
 require 'open-uri'
 require 'json'
-require 'uri'
+require 'addressable/uri'
 
 module Hypermicrodata
 

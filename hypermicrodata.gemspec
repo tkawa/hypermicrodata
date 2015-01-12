@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "mechanize"
   spec.add_dependency "halibut"
   spec.add_dependency "multi_json"
+  spec.add_dependency "addressable"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"

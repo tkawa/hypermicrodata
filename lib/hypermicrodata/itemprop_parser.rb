@@ -65,10 +65,10 @@ module Hypermicrodata
     # This returns an empty string if can't form a valid
     # absolute url as per the Microdata spec.
     def make_absolute_url(url)
-      return url unless URI.parse(url).relative?
+      return url unless Addressable::URI.parse(url).relative?
       begin
-        URI.parse(@page_url).merge(url).to_s
-      rescue URI::Error
+        Addressable::URI.parse(@page_url).merge(url).to_s
+      rescue
         url
       end
     end
