@@ -46,7 +46,7 @@ When you use this in Rails, you don't need to extract data manually.
 
 ```
 Mime::Type.register 'application/vnd.amundsen-uber+json', :uberjson
-# or when you want HAL
+# or if you want HAL
 Mime::Type.register 'application/hal+json', :haljson
 ```
 
@@ -63,8 +63,7 @@ end
 /app/views/people/show.html.haml
 
 ```
-.person{itemscope: true, itemtype: 'http://schema.org/Person',
-        itemid: person_url(@person), data: {main_item: true}}
+%main.person{itemscope: true, itemtype: 'http://schema.org/Person', itemid: person_url(@person)}
   .media
     .media-image.pull-left
       = image_tag @person.picture_path, alt: '', itemprop: 'image'
@@ -73,6 +72,11 @@ end
         %span{itemprop: 'name'}= @person.name
   = link_to 'collection', people_path, rel: 'collection', itemprop: 'isPartOf'
 ```
+
+`<main>` elements is considered root nodes of the extraction into JSON.
+
+If you don't want use `<main>`, you can use elements with `data-main-item` attribute instead.
+
 
 And you can serve following JSON:
 
