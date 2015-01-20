@@ -1,5 +1,6 @@
 require "hypermicrodata/version"
 require "uberous/uber"
+require "forwardable"
 require "halibut"
 require "nokogiri"
 require "mechanize"
