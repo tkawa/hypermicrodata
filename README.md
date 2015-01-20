@@ -1,16 +1,14 @@
 # Hypermicrodata
 
-Ruby library for extracting HTML5 Microdata with Hypermedia
+Ruby library for extracting HTML5 Microdata with Hypermedia and converting them into various JSON format.
 
 [![Build Status](https://travis-ci.org/tkawa/hypermicrodata.png)](https://travis-ci.org/tkawa/hypermicrodata)
 
-## Story 
+## Story (from original 'microdata' gem)
 
-Most of the code here was extracted from [Mida](https://github.com/LawrenceWoodman/mida) by Lawrence Woodman. This was done in order to have a simpler, more generic Microdata parser without all the vocabulary awareness and other features. This gem is also tested under Ruby 1.9.3 and Ruby 2.0.0, though it could be better tested.
+> Most of the code here was extracted from [Mida](https://github.com/LawrenceWoodman/mida) by Lawrence Woodman. This was done in order to have a simpler, more generic Microdata parser without all the vocabulary awareness and other features. This gem is also tested under Ruby 1.9.3 and Ruby 2.0.0, though it could be better tested.
 
 ## Installation
-
-This library has not been released to RubyGems.org yet, but when it is the intention is to have it install with the following.
 
 Add this line to your application's Gemfile:
 
@@ -54,7 +52,6 @@ Mime::Type.register 'application/hal+json', :haljson
 
 ```
 class PeopleController < ApplicationController
-  before_action :set_message, only: %i(show edit update destroy)
   include Hypermicrodata::Rails::HtmlBasedJsonRenderer
   ...
 end
