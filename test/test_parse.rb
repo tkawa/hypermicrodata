@@ -19,6 +19,7 @@ class TestParse < Test::Unit::TestCase
     assert_equal ["Jason Ronallo"], properties['name'].map(&:value)
     assert_equal ["http://twitter.com/ronallo"], properties['url'].map(&:value)
     assert_equal ["Associate Head of Digital Library Initiatives"], properties['jobTitle'].map(&:value)
+    assert_equal ["1900-09-14T21:30"], properties['birthDate'].map(&:value)
   end 
 
   def test_nested_item

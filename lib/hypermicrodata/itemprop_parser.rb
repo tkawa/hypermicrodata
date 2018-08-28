@@ -92,13 +92,11 @@ module Hypermicrodata
     end
 
     def extract_property_value
-      element = @element.name
-      if non_textcontent_element?(element)
-        attribute = NON_TEXTCONTENT_ELEMENTS[element]
-        value = @element.attribute(attribute).value
-        url_attribute?(attribute) ? make_absolute_url(value) : value
+      if non_textcontent_element?(@element.name)
+        extract_attribute
       else
-        @element.inner_text.strip
+        attribute = @element.attribute('content')
+        attribute ? attribute.value.strip : @element.inner_text.strip
       end
     end
 
@@ -108,6 +106,13 @@ module Hypermicrodata
       else
         extract_property_value
       end
+    end
+
+    def extract_attribute
+      attribute_name = NON_TEXTCONTENT_ELEMENTS[@element.name]
+      attribute = @element.attribute('content') || @element.attribute(attribute_name)
+      value = attribute.nil? ? nil : attribute.value
+      url_attribute?(attribute) ? make_absolute_url(value) : value
     end
 
   end
